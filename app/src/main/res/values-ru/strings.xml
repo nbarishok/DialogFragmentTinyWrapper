@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="sample_dialog_title">Заголовок</string>
+    <string name="sample_dialog_subtitle">Подзаголовок</string>
+    <string name="sample_dialog_ok">ок</string>
+    <string name="sample_dialog_cancel">отмена</string>
+    <string name="dialog_sample_fragment_btn_save_1">сохранить \'1\' для \'OK\'</string>
+</resources>

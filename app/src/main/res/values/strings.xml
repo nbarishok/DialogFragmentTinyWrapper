@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">DialogFragmentTinyWrapper</string>
+    <string name="sample_dialog_title">Title</string>
+    <string name="sample_dialog_subtitle">Subtitle</string>
+    <string name="sample_dialog_ok">ok</string>
+    <string name="sample_dialog_cancel">cancel</string>
+    <string name="dialog_sample_fragment_btn_save_1">save \'1\' for \'OK\'</string>
+</resources>
