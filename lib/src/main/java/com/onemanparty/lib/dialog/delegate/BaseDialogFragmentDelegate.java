@@ -7,6 +7,8 @@ import android.os.Parcelable;
 
 import com.onemanparty.lib.dialog.LifecycleUtils;
 
+import java.util.UUID;
+
 
 /**
  * Base class for all dialog delegate implementations
@@ -29,8 +31,14 @@ public abstract class BaseDialogFragmentDelegate<D extends Parcelable> {
      * Data
      */
     private D mData;
+    /**
+     * Unique id for dialog
+     * Initializes onCreate(...)
+     */
+    private String mId;
 
-    private static final String KEY_DATA_POSTFIX = ".KEY_DATA";
+    private static final String KEY_DATA = "KEY_DATA";
+    private static final String KEY_ID = "KEY_ID";
 
     /**
      * initializes / restores instance state
@@ -40,10 +48,15 @@ public abstract class BaseDialogFragmentDelegate<D extends Parcelable> {
      */
     public void onCreate(Bundle savedInstanceState, Activity activity) {
         mActivity = activity;
-        mRecreateDialog = LifecycleUtils.tryRemoveFragment(activity, getDialogTag());
-        if (savedInstanceState != null && savedInstanceState.containsKey(getSaveStateKey())) {
-            mData = savedInstanceState.getParcelable(getSaveStateKey());
+        if (savedInstanceState == null) {
+            mId = UUID.randomUUID().toString();
+        } else {
+            mId = savedInstanceState.getString(KEY_ID);
+            if (savedInstanceState.containsKey(KEY_DATA)) {
+                mData = savedInstanceState.getParcelable(KEY_DATA);
+            }
         }
+        mRecreateDialog = LifecycleUtils.tryRemoveFragment(activity, mId);
     }
 
     /**
@@ -61,7 +74,8 @@ public abstract class BaseDialogFragmentDelegate<D extends Parcelable> {
      * @param savedInstanceState savedInstanceState
      */
     public void onSaveInstanceState(Bundle savedInstanceState) {
-        savedInstanceState.putParcelable(getSaveStateKey(), mData);
+        savedInstanceState.putParcelable(KEY_DATA, mData);
+        savedInstanceState.putString(KEY_ID, mId);
     }
 
     /**
@@ -71,15 +85,11 @@ public abstract class BaseDialogFragmentDelegate<D extends Parcelable> {
     public void showDialog(D data) {
         mData = data;
         DialogFragment dialogInstance = createDialogInstance();
-        dialogInstance.show(mActivity.getFragmentManager(), getDialogTag());
+        dialogInstance.show(mActivity.getFragmentManager(), mId);
     }
 
     protected D getData() {
         return mData;
-    }
-
-    private String getSaveStateKey() {
-        return getDialogTag() + KEY_DATA_POSTFIX;
     }
 
     /**
@@ -87,11 +97,5 @@ public abstract class BaseDialogFragmentDelegate<D extends Parcelable> {
      * @return dialog instance
      */
     protected abstract DialogFragment createDialogInstance();
-
-    /**
-     * Get unique identifier for dialog instance
-     * @return unique id
-     */
-    protected abstract String getDialogTag();
 
 }

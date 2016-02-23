@@ -60,10 +60,4 @@ public class ConfirmDialogFragmentDelegate<D extends Parcelable> extends BaseDia
             mListener.onOkDialog(dialogFragment, getData());
         }
     }
-
-    @Override
-    public String getDialogTag() {
-        return TAG;
-    }
 }
-
