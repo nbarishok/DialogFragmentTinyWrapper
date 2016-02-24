@@ -31,7 +31,8 @@ public class ConfirmDialogFragmentDelegate<D extends Parcelable> extends BaseDia
     private int mOkRes;
     private int mCancelRes;
 
-    public ConfirmDialogFragmentDelegate(OnConfirmWithDataDialogListener<D> listener, int titleRes, int subtitleRes, int okRes, int cancelRes) {
+    public ConfirmDialogFragmentDelegate(String tag, OnConfirmWithDataDialogListener<D> listener, int titleRes, int subtitleRes, int okRes, int cancelRes) {
+        super(tag);
         // it is better to use <b>Builder</b> pattern to create a dialog instance
         this.mListener = listener;
         this.mTitleRes = titleRes;

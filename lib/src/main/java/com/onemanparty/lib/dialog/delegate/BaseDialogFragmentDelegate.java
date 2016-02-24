@@ -7,8 +7,6 @@ import android.os.Parcelable;
 
 import com.onemanparty.lib.dialog.LifecycleUtils;
 
-import java.util.UUID;
-
 
 /**
  * Base class for all dialog delegate implementations
@@ -35,10 +33,13 @@ public abstract class BaseDialogFragmentDelegate<D extends Parcelable> {
      * Unique id for dialog
      * Initializes onCreate(...)
      */
-    private String mId;
+    private String mTag;
 
     private static final String KEY_DATA = "KEY_DATA";
-    private static final String KEY_ID = "KEY_ID";
+
+    public BaseDialogFragmentDelegate(String id) {
+        mTag = id;
+    }
 
     /**
      * initializes / restores instance state
@@ -48,15 +49,12 @@ public abstract class BaseDialogFragmentDelegate<D extends Parcelable> {
      */
     public void onCreate(Bundle savedInstanceState, Activity activity) {
         mActivity = activity;
-        if (savedInstanceState == null) {
-            mId = UUID.randomUUID().toString();
-        } else {
-            mId = savedInstanceState.getString(KEY_ID);
-            if (savedInstanceState.containsKey(KEY_DATA)) {
-                mData = savedInstanceState.getParcelable(KEY_DATA);
+        if (savedInstanceState != null) {
+            if (savedInstanceState.containsKey(getUniqueDataKey())) {
+                mData = savedInstanceState.getParcelable(getUniqueDataKey());
             }
         }
-        mRecreateDialog = LifecycleUtils.tryRemoveFragment(activity, mId);
+        mRecreateDialog = LifecycleUtils.tryRemoveFragment(activity, mTag);
     }
 
     /**
@@ -74,8 +72,7 @@ public abstract class BaseDialogFragmentDelegate<D extends Parcelable> {
      * @param savedInstanceState savedInstanceState
      */
     public void onSaveInstanceState(Bundle savedInstanceState) {
-        savedInstanceState.putParcelable(KEY_DATA, mData);
-        savedInstanceState.putString(KEY_ID, mId);
+        savedInstanceState.putParcelable(getUniqueDataKey(), mData);
     }
 
     /**
@@ -85,12 +82,17 @@ public abstract class BaseDialogFragmentDelegate<D extends Parcelable> {
     public void showDialog(D data) {
         mData = data;
         DialogFragment dialogInstance = createDialogInstance();
-        dialogInstance.show(mActivity.getFragmentManager(), mId);
+        boolean isDialogShown = LifecycleUtils.hasFragment(mActivity, mTag);
+        if (!isDialogShown) {
+            dialogInstance.show(mActivity.getFragmentManager(), mTag);
+        }
     }
 
     protected D getData() {
         return mData;
     }
+
+    private String getUniqueDataKey() { return mTag + KEY_DATA; }
 
     /**
      * Provide dialog instance to show
