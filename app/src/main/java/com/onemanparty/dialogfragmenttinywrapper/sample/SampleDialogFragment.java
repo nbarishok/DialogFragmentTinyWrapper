@@ -52,7 +52,7 @@ public class SampleDialogFragment extends BaseFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
          super.onCreate(savedInstanceState);
-        mDelegate = new ConfirmDialogFragmentDelegate<>(mListener, R.string.sample_dialog_title, R.string.sample_dialog_subtitle, R.string.sample_dialog_ok, R.string.sample_dialog_cancel);
+        mDelegate = new ConfirmDialogFragmentDelegate<>("some_dialog", mListener, R.string.sample_dialog_title, R.string.sample_dialog_subtitle, R.string.sample_dialog_ok, R.string.sample_dialog_cancel);
         mDelegate.onCreate(savedInstanceState, (BaseActivity) getActivity());
     }
 

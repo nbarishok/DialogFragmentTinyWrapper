@@ -26,5 +26,14 @@ public class LifecycleUtils {
         }
         return false;
     }
+
+    public static boolean hasFragment(Activity activity, String tag) {
+        if (tag == null) {
+            return false;
+        }
+        FragmentManager fragmentManager = activity.getFragmentManager();
+        Fragment fragment = fragmentManager.findFragmentByTag(tag);
+        return fragment != null;
+    }
 }
 
