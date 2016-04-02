@@ -7,8 +7,6 @@ import android.os.Parcelable;
 
 import com.onemanparty.lib.dialog.LifecycleUtils;
 
-import java.util.UUID;
-
 
 /**
  * Base class for all dialog delegate implementations

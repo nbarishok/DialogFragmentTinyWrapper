@@ -27,6 +27,12 @@ public class LifecycleUtils {
         return false;
     }
 
+    /**
+     * Is fragment already added to frgament manager?
+     * @param activity activity
+     * @param tag fragment tag
+     * @return true - added, false otherwise
+     */
     public static boolean hasFragment(Activity activity, String tag) {
         if (tag == null) {
             return false;
